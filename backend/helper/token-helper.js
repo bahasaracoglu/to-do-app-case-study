@@ -1,4 +1,4 @@
-const JWT_SECRET = require("../config/config");
+const { JWT_SECRET } = require("../config/config");
 const jwt = require("jsonwebtoken");
 const db = require("../data/db-config");
 

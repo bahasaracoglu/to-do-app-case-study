@@ -7,6 +7,7 @@ const restrict = require("./middleware/restricted");
 // const postsRouter = require("../api/posts/posts-router");
 const authRouter = require("../api/auth/auth-router");
 const usersRouter = require("../api/users/users-router");
+const todosRouter = require("../api/todos/todos-router");
 
 server.use(helmet());
 server.use(express.json());
@@ -14,7 +15,7 @@ server.use(cors());
 server.use(morgan("dev"));
 
 server.use("/api/users", restrict, usersRouter);
-// server.use("/api/posts", postsRouter);
+server.use("/api/todos", todosRouter);
 server.use("/api/auth", authRouter);
 // server.use("/api/favorites", restrict, favRouter);
 // server.use("/api/comments", restrict, commentsRouter);
