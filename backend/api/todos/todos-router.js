@@ -50,58 +50,59 @@ router.post(
 
 //updates post
 
-/*
 router.put(
-  "/:user_id/:post_id",
+  "/:user_id/:todo_id",
   restricted,
-  postsMw.isUserAllowed,
-  //postsMw.isUserOwnThisPost,
-  postsMw.checkPayload,
+  todosMw.isUserAllowed,
+  todosMw.isUserOwnThisTodo,
+  todosMw.checkPayload,
   async (req, res, next) => {
     try {
-      const post_id = req.params.post_id;
+      const todo_id = req.params.todo_id;
       const user_id = req.params.user_id;
-      const { body, image_url } = req.body;
-      const newPost = {
+      const { body, image_upload, file_upload } = req.body;
+      const newTodo = {
         user_id: user_id,
         body: body,
-        image_url: image_url,
+        image_upload: image_upload,
+        file_upload: file_upload,
       };
-      const updatedPost = await postsModel.update(post_id, newPost);
-      if (!updatedPost) {
-        res.status(200).json({ message: "Post cannot updated.", updatedPost });
+      const updatedTodo = await todosModel.update(todo_id, newTodo);
+      if (!updatedTodo) {
+        res.status(200).json({ message: "Todo cannot updated.", updatedTodo });
       } else {
         res.status(200).json({
-          message: "Edited post successfully submitted.",
-          updatedPost,
+          message: "Edited todo successfully submitted.",
+          updatedTodo,
         });
       }
     } catch (error) {
       next(error);
     }
   }
-);*/
+);
 
 //deletes post
 
-// router.delete(
-//   "/:user_id/:todo_id",
-//   restricted,
-//   todosMw.isUserOwnThisPost,
-//   async (req, res, next) => {
-//     try {
-//       const id = req.params.todo_id;
-//       const deletedTodo = await todosModel.remove(id);
-//       if (!deletedTodo) {
-//         res.status(400).json({ message: `Todo with id: ${id} is not found.` });
-//       } else {
-//         res.status(200).json({ message: "Todo removed successfully." });
-//       }
-//     } catch (error) {
-//       next(error);
-//     }
-//   }
-// );
+router.delete(
+  "/:user_id/:todo_id",
+  restricted,
+  todosMw.isUserAllowed,
+  todosMw.isUserOwnThisTodo,
+  async (req, res, next) => {
+    try {
+      const id = req.params.todo_id;
+      const deletedTodo = await todosModel.remove(id);
+      if (!deletedTodo) {
+        res.status(400).json({ message: `Todo with id: ${id} is not found.` });
+      } else {
+        res.status(200).json({ message: "Todo removed successfully." });
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 // router.get(
 //   "/:id/favorites",

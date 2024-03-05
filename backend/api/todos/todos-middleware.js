@@ -41,13 +41,12 @@ const isUserAllowed = async (req, res, next) => {
   }
 };
 
-/*
-const isUserOwnThisPost = async (req, res, next) => {
+const isUserOwnThisTodo = async (req, res, next) => {
   try {
     const user_id = req.params.user_id;
-    const post_id = req.params.post_id;
-    const usersPosts = await postsModel.getBy({ user_id: user_id });
-    const isAllowed = usersPosts.filter((post) => post.post_id == post_id);
+    const todo_id = req.params.todo_id;
+    const usersTodos = await todosModel.getBy({ user_id: user_id });
+    const isAllowed = usersTodos.filter((todo) => todo.post_id == todo_id);
     if (isAllowed.length === 0) {
       res.status(400).json({
         message: `No permission for this operation with user id:${user_id}.`,
@@ -58,6 +57,6 @@ const isUserOwnThisPost = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-};*/
+};
 
-module.exports = { checkPayload, isUserAllowed };
+module.exports = { checkPayload, isUserAllowed, isUserOwnThisTodo };

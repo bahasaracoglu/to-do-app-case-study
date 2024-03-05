@@ -28,9 +28,7 @@ async function remove(id) {
 }
 
 async function update(id, todo) {
-  await db("todos")
-    .where("todo_id", id)
-    .update({ body: todo.body, image_url: post.image_url });
+  await db("todos").where("todo_id", id).update(todo);
 
   return getById(id);
 }
