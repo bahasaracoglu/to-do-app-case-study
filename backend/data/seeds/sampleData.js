@@ -5,21 +5,21 @@
 exports.seed = async function (knex) {
   // Deletes ALL existing entries
   await knex("users").truncate();
-  await knex("posts").truncate();
+  await knex("todos").truncate();
 
   await knex("users").insert([
     {
-      username: "elonmusk",
+      name_surname: "elonmusk",
       password: "$2a$10$dFwWjD8hi8K2I9/Y65MWi.WU0qn9eAVaiBoRSShTvuJVGw8XpsCiq", // password "1234"
       email: "elonmusk@notmail.com",
     },
     {
-      username: "barackobama",
+      name_surname: "barackobama",
       password: "$2a$10$dFwWjD8hi8K2I9/Y65MWi.WU0qn9eAVaiBoRSShTvuJVGw8XpsCiq", // password "1234"
       email: "barackobama@notmail.com",
     },
     {
-      username: "justinbieber",
+      name_surname: "justinbieber",
       password: "$2a$10$dFwWjD8hi8K2I9/Y65MWi.WU0qn9eAVaiBoRSShTvuJVGw8XpsCiq", // password "1234"
       email: "justinbieber@notmail.com",
     },
