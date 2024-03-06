@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { styled } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -8,21 +8,15 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Paper from "@mui/material/Paper";
 import Fab from "@mui/material/Fab";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import ListItemText from "@mui/material/ListItemText";
-import ListSubheader from "@mui/material/ListSubheader";
-import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
-import { Divider } from "@mui/material";
 import ToDoList from "./ToDoList";
 import FormDialog from "./FormDialog";
+import axios from "axios";
+import { apiurls } from "../constants/apiurls";
+import AuthContext from "../context/AuthContex";
 
 const StyledFab = styled(Fab)({
   position: "absolute",
@@ -35,6 +29,24 @@ const StyledFab = styled(Fab)({
 
 export default function BottomAppBar() {
   const [open, setOpen] = useState(false);
+  const { currentUser } = useContext(AuthContext);
+  const [todoList, setTodoList] = useState([]);
+
+  const fetchData = () => {
+    axios
+      .get(apiurls.TodoApi + currentUser.user_id, {
+        headers: {
+          Authorization: currentUser.token,
+        },
+      })
+      .then(function (response) {
+        console.log("response", response);
+        setTodoList(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -47,7 +59,8 @@ export default function BottomAppBar() {
   return (
     <React.Fragment>
       <CssBaseline />
-      <FormDialog open={open} handleClose={handleClose} />
+
+      <FormDialog open={open} handleClose={handleClose} fetchData={fetchData} />
       <Paper square sx={{ pb: "50px", mt: "20px" }}>
         <Typography
           variant="h5"
@@ -57,7 +70,7 @@ export default function BottomAppBar() {
         >
           To Do App
         </Typography>
-        <ToDoList />
+        <ToDoList fetchData={fetchData} todoList={todoList} />
       </Paper>
       <AppBar position="fixed" color="primary" sx={{ top: "auto", bottom: 0 }}>
         <Toolbar>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createContext, useEffect, useState, useContext } from "react";
+import { useContext } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -17,7 +17,7 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../firebase";
 import AuthContext from "../context/AuthContex";
 
-export default function FormDialog({ open, handleClose }) {
+export default function FormDialog({ open, handleClose, fetchData }) {
   const { currentUser } = useContext(AuthContext);
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -92,6 +92,7 @@ export default function FormDialog({ open, handleClose }) {
                 })
                 .then(function (response) {
                   console.log(response);
+                  fetchData();
                 })
                 .catch(function (error) {
                   console.log(error);
@@ -118,6 +119,7 @@ export default function FormDialog({ open, handleClose }) {
           )
           .then(function (response) {
             console.log(response);
+            fetchData();
           })
           .catch(function (error) {
             console.log(error);
@@ -154,7 +156,7 @@ export default function FormDialog({ open, handleClose }) {
                 label="Text"
                 name="body"
                 variant="standard"
-                fullWidth="true"
+                fullWidth={true}
               />
             </Grid>
             <Grid item xs={12} md={6}>

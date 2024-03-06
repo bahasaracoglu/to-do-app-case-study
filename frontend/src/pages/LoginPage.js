@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createContext, useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,10 +14,22 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiurls } from "../constants/apiurls";
 import AuthContext from "../context/AuthContex";
+import { Snackbar } from "@mui/material";
 
 function LoginPage() {
   const { setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+  const [state, setState] = React.useState({
+    openSnackBar: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, openSnackBar } = state;
+
+  const handleCloseSnackBar = () => {
+    setState({ ...state, openSnackBar: false });
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -31,22 +43,34 @@ function LoginPage() {
       .post(apiurls.LoginApi, loginData)
       .then(function (response) {
         console.log(response);
+
         setCurrentUser({
           name_surname: response.data.name_surname,
           email: response.data.email,
           token: response.data.token,
           user_id: response.data.user_id,
         });
+
         navigate("/todo-list");
       })
       .catch(function (error) {
         console.log(error);
+        setMessage(error.response.data.message);
+        setState({ ...state, openSnackBar: true });
+        setTimeout(() => {}, 3000);
       });
   };
 
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openSnackBar}
+        onClose={handleCloseSnackBar}
+        message={message}
+        key={vertical + horizontal}
+      />
       <Box
         sx={{
           marginTop: 8,

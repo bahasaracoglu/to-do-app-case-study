@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,9 +13,22 @@ import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { apiurls } from "../constants/apiurls";
+import { Snackbar } from "@mui/material";
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
+  const [state, setState] = React.useState({
+    openSnackBar: false,
+    vertical: "top",
+    horizontal: "center",
+  });
+  const { vertical, horizontal, openSnackBar } = state;
+
+  const handleCloseSnackBar = () => {
+    setState({ ...state, openSnackBar: false });
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -28,15 +42,26 @@ function SignUpPage() {
     axios
       .post(apiurls.SingUpApi, signupData)
       .then(function (response) {
-        console.log(response);
+        console.log("response", response);
+        setMessage(response.data.message);
+        setState({ ...state, openSnackBar: true });
       })
       .catch(function (error) {
         console.log(error);
+        setMessage(error.response.data.message);
+        setState({ ...state, openSnackBar: true });
       });
   };
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={openSnackBar}
+        onClose={handleCloseSnackBar}
+        message={message}
+        key={vertical + horizontal}
+      />
       <Box
         sx={{
           marginTop: 8,

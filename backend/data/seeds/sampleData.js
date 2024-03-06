@@ -26,43 +26,43 @@ exports.seed = async function (knex) {
   ]);
   await knex("todos").insert([
     {
-      body: "Just had the most amazing sunset hike! Nature's beauty never fails to inspire me. 🌅 #naturelovers #hikingadventures",
+      body: "Prepare presentation for tomorrow's meeting.",
       user_id: 1,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Can't believe it's already June! Time flies when you're having fun. 😄 Looking forward to making the most of this summer. ☀️ #summerfun #goodtimes",
+      body: "Go grocery shopping for dinner tonight.",
       user_id: 1,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Trying out a new recipe today, and it turned out delicious! 😋 Cooking is such a therapeutic activity for me. #foodie #homemade",
+      body: "Complete weekly exercise routine.",
       user_id: 2,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Feeling grateful for all the incredible people in my life. Surrounding yourself with positive vibes is the key to happiness. 🙌 #gratitude #positivity",
+      body: "Add a new book to the reading list.",
       user_id: 2,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Just finished reading an amazing book that kept me hooked till the last page. 📚 Highly recommend it to all the fellow bookworms out there! #booklover #readinglist",
+      body: "Provide feedback to students and organize exams.",
       user_id: 3,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Spent the afternoon exploring a hidden gem in the city. Sometimes the best discoveries are right in your own backyard. #adventureawaits #cityexploration",
+      body: "Plan and execute house cleaning.",
       user_id: 3,
       file_upload: "",
       image_upload: "",
     },
     {
-      body: "Taking a break from screens and enjoying a digital detox. It's refreshing to disconnect and focus on the present moment. #unplug #mindfulness",
+      body: "Get ingredients to try a new recipe.",
       user_id: 3,
       file_upload: "",
       image_upload: "",
