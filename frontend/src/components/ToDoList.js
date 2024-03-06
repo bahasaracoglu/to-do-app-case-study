@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
@@ -12,6 +13,9 @@ import {
   ListItemAvatar,
   ListItemButton,
 } from "@mui/material";
+import axios from "axios";
+import { apiurls } from "../constants/apiurls";
+import AuthContext from "../context/AuthContex";
 
 const style = {
   p: 0,
@@ -90,19 +94,69 @@ function ToDoList() {
       person: "https://pc.net/img/terms/avatar.svg",
     },
   ];
+  const [todoList, setTodoList] = useState([]);
+  const { currentUser } = useContext(AuthContext);
+  useEffect(() => {
+    axios
+      .get(apiurls.TodoApi + currentUser.user_id, {
+        headers: {
+          Authorization: currentUser.token,
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+        setTodoList(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }, []);
+  const handleDelete = (todo_id) => {
+    axios
+      .delete(apiurls.TodoApi + currentUser.user_id + "/" + todo_id, {
+        headers: {
+          Authorization: currentUser.token,
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
   return (
     <List sx={{ mb: 2 }}>
-      {messages.map(({ id, primary, secondary, person }) => (
-        <React.Fragment key={id}>
+      {todoList.map(({ user_id, body, image_upload, file_upload, todo_id }) => (
+        <React.Fragment key={user_id}>
           <ListItemButton>
             <ListItemAvatar>
-              <Avatar alt="Profile Picture" src={person} />
+              <Avatar alt="Profile Picture" src={image_upload} />
             </ListItemAvatar>
-            <ListItemText primary={primary} secondary={secondary} />
+            <ListItemText
+              primary={body}
+              secondary={
+                file_upload ? (
+                  <a
+                    href={file_upload}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Attached file
+                  </a>
+                ) : (
+                  ""
+                )
+              }
+            />
             <IconButton edge="end" aria-label="edit">
               <EditIcon />
             </IconButton>
-            <IconButton edge="end" aria-label="delete">
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              onClick={() => handleDelete(todo_id)}
+            >
               <DeleteIcon />
             </IconButton>
           </ListItemButton>

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { createContext, useEffect, useState, useContext } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,7 +16,7 @@ import { apiurls } from "../constants/apiurls";
 import AuthContext from "../context/AuthContex";
 
 function LoginPage() {
-  const { setCurrentUser } = React.useContext(AuthContext);
+  const { setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -34,6 +35,7 @@ function LoginPage() {
           name_surname: response.data.name_surname,
           email: response.data.email,
           token: response.data.token,
+          user_id: response.data.user_id,
         });
         navigate("/todo-list");
       })

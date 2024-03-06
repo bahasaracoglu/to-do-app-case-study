@@ -3,7 +3,7 @@ const tokenHelper = require("../../helper/token-helper");
 
 const isUserExist = async (req, res, next) => {
   try {
-    const user_id = req.params.id;
+    const user_id = req.params.user_id;
     const userExist = await usersModel.getById(user_id);
     if (!userExist) {
       res

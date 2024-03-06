@@ -46,7 +46,7 @@ const isUserOwnThisTodo = async (req, res, next) => {
     const user_id = req.params.user_id;
     const todo_id = req.params.todo_id;
     const usersTodos = await todosModel.getBy({ user_id: user_id });
-    const isAllowed = usersTodos.filter((todo) => todo.post_id == todo_id);
+    const isAllowed = usersTodos.filter((todo) => todo.todo_id == todo_id);
     if (isAllowed.length === 0) {
       res.status(400).json({
         message: `No permission for this operation with user id:${user_id}.`,

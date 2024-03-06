@@ -9,15 +9,21 @@ const restricted = require("../middleware/restricted");
 // brings all todos for feed
 
 // brings all todos of user with id
-router.get("/:id", restricted, usersMw.isUserExist, async (req, res, next) => {
-  try {
-    const user_id = req.params.id;
-    const todos = await todosModel.getBy({ user_id: user_id });
-    res.status(200).json(todos);
-  } catch (error) {
-    next(error);
+router.get(
+  "/:user_id",
+  restricted,
+  usersMw.isUserExist,
+  todosMw.isUserAllowed,
+  async (req, res, next) => {
+    try {
+      const user_id = req.params.user_id;
+      const todos = await todosModel.getBy({ user_id: user_id });
+      res.status(200).json(todos);
+    } catch (error) {
+      next(error);
+    }
   }
-});
+);
 
 //creates new todo
 router.post(

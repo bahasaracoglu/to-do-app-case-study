@@ -50,6 +50,7 @@ router.post(
         token: req.token,
         name_surname: req.currentUser.name_surname,
         email: req.currentUser.email,
+        user_id: req.currentUser.user_id,
       });
     } catch (error) {
       next(error);
