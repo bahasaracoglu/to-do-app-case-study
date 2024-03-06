@@ -46,15 +46,12 @@ function checkPayloadLogin(req, res, next) {
 
 //isUserAlreadyExist kayıt olurken db'de bu isimde bir kullanıcı olup olmadığını sorgular.//
 async function isUserAlreadyExist(req, res, next) {
-  const { email, name_surname } = req.body;
+  const { email } = req.body;
 
-  // Kullanıcı adı ve e-posta adresi kontrolü
+  // e-posta adresi kontrolü
 
   try {
-    const existingUser = await usersModel.getByEmail(
-      { name_surname: name_surname },
-      { email: email }
-    );
+    const existingUser = await usersModel.getByEmail(email);
 
     if (existingUser) {
       if (existingUser.email === email) {
@@ -91,7 +88,7 @@ async function isUserExist(req, res, next) {
     let existingUser;
     if (validator.isEmail(email)) {
       // Eğer giriş verisi e-posta adresi ise
-      existingUser = await usersModel.getByEmail({ email: email });
+      existingUser = await usersModel.getByEmail(email);
     }
 
     if (existingUser) {

@@ -12,8 +12,14 @@ import {
 import SignUpPage from "./pages/SignUpPage";
 import LoginPage from "./pages/LoginPage";
 import ToDoPage from "./pages/ToDoPage";
+import { useContext } from "react";
+import AuthContext, { AuthProvider } from "./context/AuthContex";
 
 function App() {
+  const { currentUser } = useContext(AuthContext);
+  const RequireAuth = ({ children }) => {
+    return currentUser ? children : <Navigate to="/login" />;
+  };
   const router = createBrowserRouter([
     { path: "*", element: <Navigate to="/login" /> },
     {
@@ -26,13 +32,16 @@ function App() {
     },
     {
       path: "/todo-list",
-      element: <ToDoPage />,
+      element: (
+        <RequireAuth>
+          <ToDoPage />
+        </RequireAuth>
+      ),
     },
   ]);
   return (
     <div className="App">
       <RouterProvider router={router} />
-      {/*  */}
     </div>
   );
 }

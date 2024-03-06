@@ -48,6 +48,8 @@ router.post(
       res.status(201).json({
         message: "User successfully logged in.",
         token: req.token,
+        name_surname: req.currentUser.name_surname,
+        email: req.currentUser.email,
       });
     } catch (error) {
       next(error);

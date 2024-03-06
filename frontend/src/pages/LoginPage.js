@@ -10,17 +10,38 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { apiurls } from "../constants/apiurls";
+import AuthContext from "../context/AuthContex";
 
 function LoginPage() {
+  const { setCurrentUser } = React.useContext(AuthContext);
   const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const loginData = {
       email: data.get("email"),
       password: data.get("password"),
-    });
+    };
+    console.log(loginData);
+    axios
+      .post(apiurls.LoginApi, loginData)
+      .then(function (response) {
+        console.log(response);
+        setCurrentUser({
+          name_surname: response.data.name_surname,
+          email: response.data.email,
+          token: response.data.token,
+        });
+        navigate("/todo-list");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

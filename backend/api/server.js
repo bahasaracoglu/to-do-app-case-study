@@ -11,7 +11,7 @@ const todosRouter = require("../api/todos/todos-router");
 
 server.use(helmet());
 server.use(express.json());
-server.use(cors());
+server.use(cors({ origin: "http://localhost:3000" }));
 server.use(morgan("dev"));
 
 server.use("/api/users", restrict, usersRouter);

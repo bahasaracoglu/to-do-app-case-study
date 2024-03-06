@@ -9,7 +9,7 @@ async function getById(id) {
 }
 
 async function getByEmail(email) {
-  const user = await db("users").where(email).first();
+  const user = await db("users").where("email", email).first();
   return user;
 }
 
